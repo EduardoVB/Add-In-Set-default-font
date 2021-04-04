@@ -162,7 +162,7 @@ Private Sub Form_Load()
     
     chkEnabled.Value = Abs(CLng(gChangeDefaultFontEnabled))
     
-    Me.Move GetSetting(App.Title, "Settings", "WindowLeft", Screen.Width * 0.7 - Me.Width), GetSetting(App.Title, "Settings", "WindowTop", 1300), GetSetting(App.Title, "Settings", "WindowWidth", Me.Width), GetSetting(App.Title, "Settings", "WindowHeight", Me.Height)
+    Me.Move GetSetting(App.Title, "Settings", "WindowLeft", Screen.Width * 0.7 - Me.Width), GetSetting(App.Title, "Settings", "WindowTop", 1300)
     
     mLoading = False
 End Sub
@@ -181,6 +181,4 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
     SaveSetting App.Title, "Settings", "WindowLeft", Me.Left
     SaveSetting App.Title, "Settings", "WindowTop", Me.Top
-    SaveSetting App.Title, "Settings", "WindowWidth", Me.Width
-    SaveSetting App.Title, "Settings", "WindowHeight", Me.Height
 End Sub
