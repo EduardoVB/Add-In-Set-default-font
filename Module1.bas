@@ -13,8 +13,14 @@ Public Function FontExists(nFontName As String) As Boolean
 End Function
 
 Public Sub ChangeComponentFont(nComponent As VBComponent, Optional nReload As Boolean)
+    Dim iLng As Long
+    
     If (nComponent.Type = vbext_ct_VBForm) Or (nComponent.Type = vbext_ct_UserControl) Or (nComponent.Type = vbext_ct_VBMDIForm) Or (nComponent.Type = vbext_ct_PropPage) Then
-        If (nComponent.Designer.VBControls.Count = 0) And (nComponent.FileNames(1) = "") Then
+        iLng = -1
+        On Error Resume Next
+        iLng = nComponent.Designer.VBControls.Count
+        On Error GoTo 0
+        If (iLng = 0) And (nComponent.FileNames(1) = "") Then
             Dim iProp As Property
             Dim p As Long
             Dim iObj As Object
