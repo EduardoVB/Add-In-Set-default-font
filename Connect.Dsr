@@ -34,6 +34,7 @@ Private WithEvents mProjects As VBIDE.VBProjectsEvents
 Attribute mProjects.VB_VarHelpID = -1
 Private WithEvents mComponents As VBIDE.VBComponentsEvents
 Attribute mComponents.VB_VarHelpID = -1
+Private mNoProject As Boolean
 
 Sub HidefrmMain()
     
@@ -159,10 +160,19 @@ Private Sub mProjects_ItemActivated(ByVal VBProject As VBIDE.VBProject)
 End Sub
 
 Private Sub mProjects_ItemAdded(ByVal VBProject As VBIDE.VBProject)
+    mNoProject = False
     SetActiveObjectsHandlers
+    If gChangeDefaultFontEnabled Then
+        If VBProject.VBComponents.Count = 1 Then
+            ChangeComponentFont VBProject.VBComponents(1)
+        End If
+    End If
 End Sub
 
 Private Sub mProjects_ItemRemoved(ByVal VBProject As VBIDE.VBProject)
+    If VBInstance.VBProjects.Count = 1 Then
+        mNoProject = True
+    End If
     SetActiveObjectsHandlers
 End Sub
 
@@ -171,8 +181,10 @@ Private Sub mProjects_ItemRenamed(ByVal VBProject As VBIDE.VBProject, ByVal OldN
 End Sub
 
 Private Sub mComponents_ItemAdded(ByVal VBComponent As VBIDE.VBComponent)
-    If gChangeDefaultFontEnabled And (Not VBComponent Is Nothing) Then
-        ChangeComponentFont VBComponent
+    If Not mNoProject Then
+        If gChangeDefaultFontEnabled And (Not VBComponent Is Nothing) Then
+            ChangeComponentFont VBComponent
+        End If
     End If
 End Sub
 
