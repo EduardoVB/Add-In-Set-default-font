@@ -62,6 +62,11 @@ Sub ShowfrmMain()
    
 End Sub
 
+Private Sub AddinInstance_OnBeginShutdown(custom() As Variant)
+    Set mComponents = Nothing
+    Set mProjects = Nothing
+End Sub
+
 Private Sub AddinInstance_OnConnection(ByVal Application As Object, ByVal ConnectMode As AddInDesignerObjects.ext_ConnectMode, ByVal AddInInst As Object, custom() As Variant)
     On Error GoTo error_handler
     
@@ -117,7 +122,9 @@ Private Sub AddinInstance_OnStartupComplete(custom() As Variant)
     SetActiveObjectsHandlers
     If Not VBInstance.ActiveVBProject Is Nothing Then
         If gChangeDefaultFontEnabled And (VBInstance.ActiveVBProject.VBComponents.Count = 1) Then
-            ChangeComponentFont VBInstance.ActiveVBProject.VBComponents(1)
+            If VBInstance.ActiveVBProject.VBComponents(1).Name = "Form1" Then
+                ChangeComponentFont VBInstance.ActiveVBProject.VBComponents(1)
+            End If
         End If
     End If
 End Sub
@@ -149,8 +156,8 @@ AddToAddInCommandBarErr:
 End Function
 
 Private Sub SetActiveObjectsHandlers()
+    Set mComponents = Nothing
     If Not VBInstance.ActiveVBProject Is Nothing Then
-        Set mComponents = Nothing
         Set mComponents = VBInstance.Events.VBComponentsEvents(VBInstance.ActiveVBProject)
     End If
 End Sub
