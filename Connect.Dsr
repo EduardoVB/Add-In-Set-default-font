@@ -26,7 +26,7 @@ Option Explicit
 Public FormDisplayed          As Boolean
 Public VBInstance             As VBIDE.VBE
 Private mcbMenuCommandBar         As Office.CommandBarControl
-Private mfrmMain                 As New frmMain
+Private mfrmMain                 As frmMain
 Public WithEvents MenuHandler As CommandBarEvents          'controlador de evento de barra de comandos
 Attribute MenuHandler.VB_VarHelpID = -1
 
@@ -41,8 +41,10 @@ Sub HidefrmMain()
     On Error Resume Next
     
     FormDisplayed = False
-    mfrmMain.Hide
-   
+    If Not mfrmMain Is Nothing Then
+        mfrmMain.Hide
+    End If
+    
 End Sub
 
 Sub ShowfrmMain()
@@ -105,9 +107,11 @@ Private Sub AddinInstance_OnDisconnection(ByVal RemoveMode As AddInDesignerObjec
     
     mcbMenuCommandBar.Delete
     
-    Unload mfrmMain
-    Set mfrmMain = Nothing
-
+    If Not mfrmMain Is Nothing Then
+        Unload mfrmMain
+        Set mfrmMain = Nothing
+    End If
+    
 End Sub
 
 Private Sub IDTExtensibility_OnStartupComplete(custom() As Variant)
